@@ -1,16 +1,16 @@
 .PHONY: build apply shell update upgrade gc clean
 
-build:
-	  nix run .#build
-
 apply:
 	  nix run .#apply
+
+build:
+	  nix run .#build
 
 shell:
 	  nix develop
 
 update:
-	  nix flake update
+	  nix run .#build-switch
 
 upgrade:
 	  nix flake update
