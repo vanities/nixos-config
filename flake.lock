@@ -177,11 +177,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1723598809,
-        "narHash": "sha256-W9/hw2UNOvUCLgqEKASXoBNWGpC76W6trbV1Pbu+UUU=",
+        "lastModified": 1723643818,
+        "narHash": "sha256-AJfaT/n5U81MoBd5KSGImDC7GTczXXV6E8UR9J4CdA8=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "80a01a74e3460881a20acc21c35049ef29a5c893",
+        "rev": "6ae2eb0434513cdbdc6c30ee6c9d1689b9cea89b",
         "type": "github"
       },
       "original": {
@@ -193,11 +193,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1723599960,
-        "narHash": "sha256-tTU4/ePgdDO3OPYAuXx84x/DsJ/m+KoFx2LeqBhFu4U=",
+        "lastModified": 1723646219,
+        "narHash": "sha256-w9//1Er1joNWL+3bYEsLKCjocfCPgf1lWOx9gkB2kbA=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "6274dead7233ee2536345c704c048643514f7345",
+        "rev": "6df64eb471d30de24f3f8cf9cf92da5269fa8d63",
         "type": "github"
       },
       "original": {
@@ -339,17 +339,17 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1692124084,
-        "narHash": "sha256-2dCPd01ErApfbt1ooeaoDa5qRQcMxMsdKoiA6qfdJ6o=",
+        "lastModified": 1700944361,
+        "narHash": "sha256-kca0Gm/Uj0FWWG/gA+4egR3bRI0tmDx2DVyT29yx4to=",
         "ref": "refs/heads/main",
-        "rev": "f22586b10f0b04793073c661574f884f4031076c",
-        "revCount": 16,
+        "rev": "3863e10f5e8d7f424228f5b791959c7bbc025bcd",
+        "revCount": 12,
         "type": "git",
-        "url": "ssh://git@github.com/dustinlyons/nix-secrets.git"
+        "url": "ssh://git@github.com/vanities/nix-secrets-example.git"
       },
       "original": {
         "type": "git",
-        "url": "ssh://git@github.com/dustinlyons/nix-secrets.git"
+        "url": "ssh://git@github.com/vanities/nix-secrets-example.git"
       }
     },
     "systems": {

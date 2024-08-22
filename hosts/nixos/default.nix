@@ -1,6 +1,6 @@
-{ config, inputs, lib, pkgs, agenix, ... }:
+{ config, inputs, pkgs, agenix, ... }:
 
-let user = "dustin";
+let user = "vanities";
     keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOk8iAnIaa1deoc7jw8YACPNVka1ZFJxhnU4G74TmS+p" ]; in
 {
   imports = [
@@ -20,9 +20,11 @@ let user = "dustin";
       };
       efi.canTouchEfiVariables = true;
     };
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "v4l2loopback" ];
-    kernelModules = [ "uinput" "v4l2loopback" ];
-    extraModulePackages = [ pkgs.linuxPackages.v4l2loopback ];
+    initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+    # Uncomment for AMD GPU
+    # initrd.kernelModules = [ "amdgpu" ];
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = [ "uinput" ];
   };
 
   # Set your time zone.
@@ -32,9 +34,9 @@ let user = "dustin";
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking = {
-    hostName = "felix"; # Define your hostname.
+    hostName = "%HOST%"; # Define your hostname.
     useDHCP = false;
-    interfaces.eno1.useDHCP = true;
+    interfaces."%INTERFACE%".useDHCP = true;
   };
 
   # Turn on flag for proprietary software
@@ -62,14 +64,17 @@ let user = "dustin";
     xserver = {
       enable = true;
 
-      videoDrivers = [ "nvidia" ];
+      # Uncomment these for AMD or Nvidia GPU
+      # videoDrivers = [ "amdgpu" ];
+      # videoDrivers = [ "nvidia" ];
 
+      # Uncomment this for Nvidia GPU
       # This helps fix tearing of windows for Nvidia cards
-      screenSection = ''
-        Option       "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-        Option       "AllowIndirectGLXProtocol" "off"
-        Option       "TripleBuffer" "on"
-      '';
+      # services.xserver.screenSection = ''
+      #   Option       "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
+      #   Option       "AllowIndirectGLXProtocol" "off"
+      #   Option       "TripleBuffer" "on"
+      # '';
 
       # LightDM Display Manager
       displayManager.defaultSession = "none+bspwm";
@@ -84,22 +89,19 @@ let user = "dustin";
         enable = true;
       };
 
+      # Turn Caps Lock into Ctrl
+      layout = "us";
+      xkbOptions = "ctrl:nocaps";
+
       # Better support for general peripherals
       libinput.enable = true;
-
-      # Turn Caps Lock into Ctrl
-      xkb = {
-        layout = "us";
-        options = "ctrl:nocaps";
-      };
     };
 
-    # Enable CUPS to print documents
-    printing = {
-      enable = true;
-      drivers = [ pkgs.brlaser ]; # Brother printer driver
-    };
+    # Let's be able to SSH into this machine
+    openssh.enable = true;
 
+    # Sync state between machines
+    # Sync state between machines
     syncthing = {
       enable = true;
       openDefaultPorts = true;
@@ -112,32 +114,9 @@ let user = "dustin";
       overrideDevices = true;
 
       settings = {
-        devices = {
-          "Macbook Pro" = {
-            id = "P2FYLQW-PKDFJGZ-EUGI2T7-OW4AH4I-KI462HD-U2VL3X3-GN55PP2-VNRE5AH";
-            autoAcceptFolders = true;
-            allowedNetwork = "192.168.0.0/16";
-            addresses = [ "tcp://192.168.0.99:51820" ];
-          };
-          "Home Lab" = {
-            id = "WW5O366-THBBBA3-HKQAYCP-EWADS4I-4KDDC5Z-3JCO42M-RLBZ3DY-NM7PEQA";
-            allowedNetwork = "192.168.0.0/16";
-            autoAcceptFolders = true;
-            addresses = [ "tcp://192.168.0.103:51820" ];
-          };
-        };
-
-        folders = {
-          "XDG Share" = {
-            id = "ukrub-quh7k";
-            path = "/home/${user}/.local/share";
-            devices = [ "Macbook Pro" "Home Lab" ];
-          };
-        };
-
+        devices = {};
         options.globalAnnounceEnabled = false; # Only sync on LAN
       };
-
     };
 
     # Picom, my window compositor with fancy effects
@@ -231,49 +210,34 @@ let user = "dustin";
       };
     };
 
-    # Let's be able to SSH into this machine
-    openssh.enable = true;
-
-    # My editor runs as a daemon
-    emacs = {
-      enable = true;
-      package = pkgs.emacs-unstable;
-    };
-
     gvfs.enable = true; # Mount, trash, and other functionalities
     tumbler.enable = true; # Thumbnail support for images
   };
 
-  systemd.user.services.emacs = {
-    serviceConfig.TimeoutStartSec = "7min";
-  };
+  # Enable CUPS to print documents
+  # services.printing.enable = true;
+  # services.printing.drivers = [ pkgs.brlaser ]; # Brother printer driver
 
   # Enable sound
-  sound.enable = true;
+  # sound.enable = true;
+  # hardware.pulseaudio.enable = true;
+
+  # Video support
   hardware = {
-    pulseaudio.enable = true;
+    opengl.enable = true;
+    # nvidia.modesetting.enable = true;
 
-    # Video support
-    opengl = {
-      enable = true;
-      driSupport32Bit = true;
-      driSupport = true;
-    };
-
-    nvidia.modesetting.enable = true;
+    # Enable Xbox support
+    # xone.enable = true;
 
     # Crypto wallet support
     ledger.enable = true;
   };
 
-  # Sync state between machines
-  # Add docker daemon
-  virtualisation = {
-    docker = {
-      enable = true;
-      logDriver = "json-file";
-    };
-  };
+
+ # Add docker daemon
+  virtualisation.docker.enable = true;
+  virtualisation.docker.logDriver = "json-file";
 
   # It's me, it's you, it's everyone
   users.users = {
@@ -308,7 +272,6 @@ let user = "dustin";
 
   fonts.packages = with pkgs; [
     dejavu_fonts
-    emacs-all-the-icons-fonts
     feather-font # from overlay
     jetbrains-mono
     font-awesome
@@ -319,11 +282,8 @@ let user = "dustin";
   environment.systemPackages = with pkgs; [
     agenix.packages."${pkgs.system}".default # "x86_64-linux"
     gitAndTools.gitFull
-    linuxPackages.v4l2loopback
-    v4l-utils
     inetutils
   ];
 
   system.stateVersion = "21.05"; # Don't change this
-
 }

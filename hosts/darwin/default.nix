@@ -1,6 +1,7 @@
 { agenix, config, pkgs, ... }:
 
-let user = "dustin"; in
+let user = "vanities"; in
+
 {
 
   imports = [
@@ -37,30 +38,13 @@ let user = "dustin"; in
 
   # Load configuration that is shared across systems
   environment.systemPackages = with pkgs; [
-    emacs-unstable
     agenix.packages."${pkgs.system}".default
   ] ++ (import ../../modules/shared/packages.nix { inherit pkgs; });
-
-  launchd.user.agents.emacs.path = [ config.environment.systemPath ];
-  launchd.user.agents.emacs.serviceConfig = {
-    KeepAlive = true;
-    ProgramArguments = [
-      "/bin/sh"
-      "-c"
-      "{ osascript -e 'display notification \"Attempting to start Emacs...\" with title \"Emacs Launch\"'; /bin/wait4path ${pkgs.emacs}/bin/emacs && { ${pkgs.emacs}/bin/emacs --fg-daemon; if [ $? -eq 0 ]; then osascript -e 'display notification \"Emacs has started.\" with title \"Emacs Launch\"'; else osascript -e 'display notification \"Failed to start Emacs.\" with title \"Emacs Launch\"' >&2; fi; } } &> /tmp/emacs_launch.log"
-    ];
-    StandardErrorPath = "/tmp/emacs.err.log";
-    StandardOutPath = "/tmp/emacs.out.log";
-  };
 
   system = {
     stateVersion = 4;
 
     defaults = {
-      LaunchServices = {
-        LSQuarantine = false;
-      };
-
       NSGlobalDomain = {
         AppleShowAllExtensions = true;
         ApplePressAndHoldEnabled = false;
@@ -77,10 +61,9 @@ let user = "dustin"; in
       };
 
       dock = {
-        autohide = false;
+        autohide = true;
         show-recents = false;
         launchanim = true;
-        mouse-over-hilite-stack = true;
         orientation = "bottom";
         tilesize = 48;
       };
@@ -93,11 +76,6 @@ let user = "dustin"; in
         Clicking = true;
         TrackpadThreeFingerDrag = true;
       };
-    };
-
-    keyboard = {
-      enableKeyMapping = true;
-      remapCapsLockToControl = true;
     };
   };
 }

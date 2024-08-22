@@ -1,38 +1,40 @@
 _:
 
 [
+  # my stuff
+  "1password"
+  "alfred"
+  "balenaetcher"
+  "bdinfo"
+  "dropbox"
+  "font-hack-nerd-font"
+  "gpg-suite"
+  "kitty"
+  "ledger-live"
+  "libreoffice"
+  "mactex"
+  "monero-wallet"
+  "ngrok"
+  "paintbrush"
+  "timemachineeditor"
+  "visual-studio-code"
+
   # Development Tools
   "homebrew/cask/docker"
-  "insomnia"
-  "tableplus"
-  "ngrok"
-  "postico"
-  "visual-studio-code"
-  "wireshark"
+  "neovim"
 
   # Communication Tools
   "discord"
-  "loom"
   "notion"
   "slack"
   "telegram"
   "zoom"
+  "signal"
 
   # Utility Tools
-  "appcleaner"
   "syncthing"
+  "caffeine"
 
   # Entertainment Tools
-  "steam"
   "vlc"
-
-  # Productivity Tools
-  "raycast"
-  "asana"
-
-  # Browsers
-  "google-chrome"
-
-  # AI
-  "diffusionbee"
 ]
