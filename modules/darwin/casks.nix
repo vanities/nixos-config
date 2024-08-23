@@ -22,6 +22,7 @@ _:
   # Development Tools
   "homebrew/cask/docker"
   "neovim"
+  "istat-menus"
 
   # Communication Tools
   "discord"
@@ -36,5 +37,5 @@ _:
   "caffeine"
 
   # Entertainment Tools
-  "vlc"
+  #"vlc"
 ]

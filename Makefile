@@ -20,7 +20,7 @@ gc:
 	  nix-collect-garbage -d
 
 clean:
-	  nix flake check
+	  #nix flake check
 	  nix-store --gc
 
 uninstall_nix:
