@@ -28,7 +28,7 @@ let user = "vanities";
   };
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  time.timeZone = "America/Chicago";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -272,7 +272,6 @@ let user = "vanities";
 
   fonts.packages = with pkgs; [
     dejavu_fonts
-    feather-font # from overlay
     jetbrains-mono
     font-awesome
     noto-fonts

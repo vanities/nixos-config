@@ -1,4 +1,4 @@
-.PHONY: build apply shell update upgrade gc clean
+.PHONY: build apply shell update upgrade gc clean uninstall_nix upgrade_nix
 
 apply:
 	  nix run .#apply
@@ -22,3 +22,10 @@ gc:
 clean:
 	  nix flake check
 	  nix-store --gc
+
+uninstall_nix:
+		nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A uninstaller ./result/bin/darwin-uninstaller
+		sudo /nix/nix-installer uninstall
+
+upgrade_nix:
+		sudo -i nix upgrade-nix

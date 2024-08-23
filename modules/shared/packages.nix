@@ -54,7 +54,7 @@ with pkgs; [
   unrar
   unzip
   zsh-powerlevel10k
-  pinentry
+  #pinentry
 
   # Python packages
   python39

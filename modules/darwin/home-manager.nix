@@ -73,7 +73,7 @@ in
         { path = "/System/Applications/Messages.app/"; }
         { path = "/System/Applications/Facetime.app/"; }
         { path = "${pkgs.kitty}/Applications/kitty.app/"; }
-        { path = "${pkgs.librewolf}/Applications/LibreWolf.app/"; }
+        #{ path = "${pkgs.librewolf}/Applications/LibreWolf.app/"; }
         {
           path = "${config.users.users.${user}.home}/.local/share/";
           section = "others";
