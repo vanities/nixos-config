@@ -18,6 +18,7 @@ _:
   "paintbrush"
   "timemachineeditor"
   "visual-studio-code"
+  "sf-symbols"
 
   # Development Tools
   "homebrew/cask/docker"
@@ -37,5 +38,5 @@ _:
   "caffeine"
 
   # Entertainment Tools
-  #"vlc"
+  "vlc"
 ]

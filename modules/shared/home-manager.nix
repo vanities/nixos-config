@@ -207,69 +207,86 @@ let name = "Adam Mischke";
       '';
      };
 
-  alacritty = {
+  kitty = {
     enable = true;
-    settings = {
-      cursor = {
-        style = "Block";
-      };
+    extraConfig = builtins.readFile ./kitty.conf;
+  };
 
-      window = {
-        opacity = 1.0;
-        padding = {
-          x = 24;
-          y = 24;
-        };
-      };
+  yabai = {
+    enable = false;
+    config = {
+      layout = "bsp";
+      auto_balance = "off";
 
-      font = {
-        normal = {
-          family = "MesloLGS NF";
-          style = "Regular";
-        };
-        size = lib.mkMerge [
-          (lib.mkIf pkgs.stdenv.hostPlatform.isLinux 10)
-          (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin 14)
-        ];
-      };
+      mouse_modifier = "fn";
+      # set modifier + right-click drag to resize window (default: resize)
+      mouse_action2 = "resize";
+      # set modifier + left-click drag to resize window (default: move)
+      mouse_action1 = "move";
 
-      dynamic_padding = true;
-      decorations = "full";
-      title = "Terminal";
-      class = {
-        instance = "Alacritty";
-        general = "Alacritty";
-      };
-
-      colors = {
-        primary = {
-          background = "0x1f2528";
-          foreground = "0xc0c5ce";
-        };
-
-        normal = {
-          black = "0x1f2528";
-          red = "0xec5f67";
-          green = "0x99c794";
-          yellow = "0xfac863";
-          blue = "0x6699cc";
-          magenta = "0xc594c5";
-          cyan = "0x5fb3b3";
-          white = "0xc0c5ce";
-        };
-
-        bright = {
-          black = "0x65737e";
-          red = "0xec5f67";
-          green = "0x99c794";
-          yellow = "0xfac863";
-          blue = "0x6699cc";
-          magenta = "0xc594c5";
-          cyan = "0x5fb3b3";
-          white = "0xd8dee9";
-        };
-      };
+      # gaps
+      top_padding = 1;
+      bottom_padding = 1;
+      left_padding = 1;
+      right_padding = 1;
+      window_gap = 5;
     };
+    extraConfig = ''
+      # bar configuration
+      yabai -m signal --add event=window_focused   action="sketchybar --trigger window_focus"
+      yabai -m signal --add event=window_created   action="sketchybar --trigger windows_on_spaces"
+      yabai -m signal --add event=window_destroyed action="sketchybar --trigger windows_on_spaces"
+
+      yabai -m config mouse_follows_focus          on
+      yabai -m config focus_follows_mouse          on
+      yabai -m config window_origin_display        default
+      yabai -m config window_placement             second_child
+      yabai -m config window_topmost               off
+      yabai -m config window_shadow                on
+      yabai -m config window_opacity               off
+      yabai -m config window_opacity_duration      0.0
+      yabai -m config active_window_opacity        1.0
+      yabai -m config normal_window_opacity        0.90
+      yabai -m config window_border                on
+      yabai -m config window_border_width          1
+      yabai -m config active_window_border_color   0xFFE6E200
+      yabai -m config normal_window_border_color   0xFFFFC428
+      yabai -m config insert_feedback_color        0xffd75f5f
+      yabai -m config split_ratio                  0.50
+      yabai -m config auto_balance                 off
+      yabai -m rule --add app="^Simulator.*$" sticky=on layer=above manage=off
+
+      # rules
+      yabai -m rule --add app="^System Settings$"    manage=off
+      yabai -m rule --add app="^System Information$" manage=off
+      yabai -m rule --add app="^System Preferences$" manage=off
+      yabai -m rule --add title="Preferences$"       manage=off
+      yabai -m rule --add title="Settings$"          manage=off
+
+      # workspace management
+      yabai -m space 1  --label todo
+      yabai -m space 2  --label browser
+      yabai -m space 3  --label chat
+      yabai -m space 4  --label utils
+      yabai -m space 5  --label code
+
+      # assign apps to spaces
+      yabai -m rule --add app="Reminder" space=todo
+      yabai -m rule --add app="Mail" space=todo
+      yabai -m rule --add app="Calendar" space=todo
+
+      yabai -m rule --add app="Librefox" space=browser
+
+      yabai -m rule --add app="Microsoft Teams" space=chat
+      yabai -m rule --add app="Slack" space=chat
+      yabai -m rule --add app="Signal" space=chat
+      yabai -m rule --add app="Messages" space=chat
+
+      yabai -m rule --add app="Strongbox" space=utils
+
+      yabai -m rule --add app="Visual Studio Code" space=code
+      yabai -m rule --add app="kitty" space=code
+    '';
   };
 
   ssh = {
